@@ -26,11 +26,11 @@
 
 ## Technology stack
 
-[x] Node
-[x] Express
-[ ] Vue (Nuxt?)
-[x] REST API
-[ ] Websocket
+- Node
+- Express
+- Vue (Nuxt?)
+- REST API
+- Websocket
 
 
 ## Data models
@@ -120,14 +120,14 @@ Body example:
 
 ## Tasks
 
-[ ] Backend - add login API
-[ ] Backend - add websockets
-[ ] Front - get active users via API + show on page
-[ ] Front - get public messages via API + show on page
-[ ] Front - send new public message via API (will be visible after refresh)
-[ ] Front - implement view profile page (user name, status, phone, email, etc.)
-[ ] Front - implement edit profile page (user name, status, phone, email, etc.)
-[ ] Sync-up
-[ ] Front - routing
-[ ] Front - websockets
-[ ] Documentation
+-  Backend - add login API
+-  Backend - add websockets
+-  Front - get active users via API + show on page
+-  Front - get public messages via API + show on page
+-  Front - send new public message via API (will be visible after refresh)
+-  Front - implement view profile page (user name, status, phone, email, etc.)
+-  Front - implement edit profile page (user name, status, phone, email, etc.)
+-  Sync-up
+-  Front - routing
+-  Front - websockets
+-  Documentation
