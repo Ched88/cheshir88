@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My first Vue app</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    Users:
+    <ul>
+      <li v-for="item in users" :key="item._id">
+        {{ item.name }}
+      </li>
+    </ul>
+
+    Global messages:
+    <ul>
+      <li v-for="item in messages" :key="item._id">
+        <b>{{ item.fromName }}:</b> {{ item.text }}
+      </li>
+    </ul>
+
+    {{user.name}} friends:
+    <ul>
+      <li v-for="item in user.friends" :key="item.id">
+        {{ item.name }}
+      </li>
+    </ul>
+
+    {{user.name}} private messages:
+    <ul>
+      <li v-for="item in private_messages" :key="item._id">
+        <b>{{ item.fromName }}:</b> {{ item.text }}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        users: [],
+        messages: [],
+        user: {},
+        private_messages: [],
+      },
+      mounted() {
+        axios.get('http://localhost:3000/users/')
+          .then(response => (this.users = response.data));
+        axios.get('http://localhost:3000/messages/')
+          .then(response => (this.messages = response.data));
+        axios.get('http://localhost:3000/users/5eca6d7ac4af8618503b323e')
+          .then(response => (this.user = response.data));
+        axios.get('http://localhost:3000/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b')
+          .then(response => (this.private_messages = response.data));
+      }      
+    })
+  </script>
+</body>
+</html>
