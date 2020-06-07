@@ -47,7 +47,9 @@
       },
       mounted() {
         axios.get('http://localhost:3000/users/')
-          .then(response => (this.users = response.data));
+          .then(response => { 
+            console.log(response.data, "_____________")
+            this.users = response.data});
         axios.get('http://localhost:3000/messages/')
           .then(response => (this.messages = response.data));
         axios.get('http://localhost:3000/users/5eca6d7ac4af8618503b323e')

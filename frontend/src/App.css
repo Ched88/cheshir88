@@ -1,0 +1,163 @@
+body{
+    background-color:#cccccc;
+}
+li{
+    list-style-type: none;
+}
+.chat-window{
+    background: #fff;
+    width: 1300px;
+    margin: 30px auto;
+    box-shadow: -10px 10px 5px 0px rgba(0, 0, 0, .2);
+    overflow: hidden;
+    min-height: 700px;
+    position: relative;
+    }
+.nav-panel{
+    width: 200px;
+    background: #59c07e;
+    float: left;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    }
+ul li a{
+        padding: 20px;
+        color:  white;
+        text-decoration: none;
+        display: block;
+        position: relative;
+        border-bottom: 1px solid #007a258e;
+        font-family: 'Roboto', sans-serif;
+        }
+
+ul li a:hover{
+        background: #10ad4a;
+        color: #fff;
+        text-decoration: none;
+        }
+a:visited{
+
+color: #fff;
+}
+
+.chat{
+    position: absolute;
+    float: left;
+    top: 0;
+    bottom: 0;
+    left: 200px;
+    right:200px;
+    }
+.chat-list{
+    position: absolute;
+    float: left;
+    top: 10px;
+    bottom: 50px;
+    left: 0px;
+    right:0px;
+}
+.input-area{
+    background: whitesmoke;
+    padding: 6px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #cfdae1;
+    }
+    .input-area .input-wrapper{
+    background: #fff;
+    border: 1px solid #cfdae1;
+    overflow: hidden;
+    float: left;
+    }
+    .input-area .input-wrapper input{
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    margin: 0;
+    padding: 0 10px;
+    outline: none;
+    color: #5D7185;
+    min-width: 800px;
+    }
+   .send-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 17px;
+        border: none;
+        cursor: pointer;
+      }
+    .send-btn:hover {
+        opacity: 0.7;
+      }
+    
+.online-list{
+    background: whitesmoke;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-left: 2px solid #cfcfcf;
+
+    width: 200px;
+}
+.span-online-users{
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    top: 10px;
+    left: 30px;
+}
+.users-list{
+    padding: 10px;
+}
+/*------------------profile------------------------*/
+.profile-window{
+    position: absolute;
+    float: left;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right:0;
+    }
+.input-area-profile{
+  
+    padding: 6px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    bottom: 400px;
+    border-top: 1px solid #cfdae1;
+    }
+.input-area-profile .input-wrapper-profile{
+    background: #fff;
+    border: 1px solid #cfdae1;
+    overflow: hidden;
+    float: left;
+    }
+.input-area-profile .input-wrapper-profile input{
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    margin: 0;
+    padding: 0 10px;
+    outline: none;
+    color: #5D7185;
+    min-width: 865px;
+    }
+.submit-btn-profile{
+   
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.span-profile{
+    font-family: 'Roboto', sans-serif;
+}
+/*------------------profile_end------------------------*/
+
