@@ -100,6 +100,10 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
 
   // Get one user by ID: http://localhost:3000/users/5eca6d7ac4af8618503b323e
   app.get('/users/:id', async (req, res) => {
+    var result = await db.collection('users').find().toArray();
+    var userNames = {};
+    result.forEach(u => userNames[u._id] = u.name);
+
     var userId = new mongo.ObjectID(req.params.id);
     var result = await db.collection('users').findOne({ '_id': userId });
     var user = {
@@ -111,7 +115,12 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
       city: result.city,
       phone: result.phone,
       email: result.email,
-      friends: result.friends,
+      friends: result.friends.map(u => {
+        return {
+          id: u.id,
+          name: userNames[u.id]
+        };
+      }),
     };
     res.json(user);
   });
