@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+       
+<div id="action_form">
+    <form action="" method="post">
+        <div class="container">
+            <label><b>Your name</b></label>
+            <div><input id="username" name="login" placeholder="Enter username" tabindex="1" type="text"></div>
+            <label><b>Your password</b></label>
+            <div><input id="password" name="password" placeholder="Enter password" tabindex="2" type="password"></div>
+            <div><label><input type="checkbox" checked="checked" name="remember"> <span class="lgn">Remember me</span></label></div>
+            <div><button onclick="testLogin()" type="submit" tabindex="3" class="lgn">Sign-in</button></div>
+            <div><button onclick="testRegister()" type="submit" tabindex="4" class="lgn">Create your account</button></div>
+            </div>
+    </form>
+</div>
+</body>
+</html>

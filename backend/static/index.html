@@ -40,9 +40,48 @@
     var app = new Vue({
       el: '#app',
       data: {
-        users: [],
-        messages: [],
-        user: {},
+        users: [{
+        "_id": "5eca6d7ac4af8618503b323e",
+        "name": "Andrew",
+        "active": true,
+        "status": "ZZZZZZZZZZZZZZZZ",
+        "city": "Vin",
+        "phone": "+380971234567",
+        "email": "1@1.com",
+        "friends": [
+            {
+                "id": "5eca7240b50de606c084494b",
+                "name": "Inokentii"
+            },
+            {
+                "id": "5eca793271506d3854ebc16b",
+                "name": "Valerii 1"
+            }
+        ]
+    }],
+        messages: [ {"_id": "5eca8837887d882cc0e98e44",
+        "from": "5eca793271506d3854ebc16b",
+        "text": "text",
+        "fromName": "Valerii 1"}],
+        user: {
+        "_id": "5eca6d7ac4af8618503b323e",
+        "name": "Andrew",
+        "active": true,
+        "status": "ZZZZZZZZZZZZZZZZ",
+        "city": "Vin",
+        "phone": "+380971234567",
+        "email": "1@1.com",
+        "friends": [
+            {
+                "id": "5eca7240b50de606c084494b",
+                "name": "Inokentii"
+            },
+            {
+                "id": "5eca793271506d3854ebc16b",
+                "name": "Valerii 1"
+            }
+        ]
+    },
         private_messages: [],
       },
       mounted() {
