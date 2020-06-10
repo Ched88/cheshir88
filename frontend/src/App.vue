@@ -9,6 +9,7 @@
                               <li class="item" v-on:click="dataUri = 'global_chat'"><a href="#"><span>Global chat</span></a></li>
                               <li class="item" v-on:click="dataUri = 'my_profile'"><a href="#"><span>My profile</span></a></li>
                               <li class="item" v-on:click="dataUri = 'my_friends'"><a href="#"><span>My friends</span></a></li>
+                              <li class="item" v-on:click="logout()"><a href="#"><span>Logout</span></a></li>
                             </ul>
                     </div>
                     <div class="chat">
@@ -46,7 +47,7 @@
                                 <div class="input-email">
                                         <div class="input-wrapper-profile"><input v-model="user.email" type="email" value="" placeholder="write something..."></div>
                                 </div>
-                                <input type="button" value="Submit" class="submit-btn-profile" v-on:click="submitUserData" >
+                                <input type="button" value="Submit" class="submit-btn-profile" v-on:click="submitUserData()" >
                             </div>
                         </div>
                         </div>
@@ -96,7 +97,7 @@
 
                     <div class="online-list">
                         <span class="span-online-users">Users now online</span>
-                        <li class="online-list-item" v-for="item in users" :key="item._id">
+                        <li class="online-list-item" v-for="item in userList" :key="item._id">
                         {{ item.name }}
                         </li>
                     </div>
@@ -108,72 +109,55 @@
 </template>
 
 <script>
-let axios = require('axios');
-export default {
-    data: function () {
-      return {
-        dataUri: 'global_chat',
-        users: [{
-        "_id": "5eca6d7ac4af8618503b323e",
-        "name": "Andrew",
-        "active": true,
-        "status": "ZZZZZZZZZZZZZZZZ",
-        "city": "Vin",
-        "phone": "+380971234567",
-        "email": "1@1.com",
-        "friends": [
-            {
-                "id": "5eca7240b50de606c084494b",
-                "name": "Inokentii"
-            },
-            {
-                "id": "5eca793271506d3854ebc16b",
-                "name": "Valerii 1"
+    let axios = require('axios');
+    export default {
+        data: function () {
+            return {
+                dataUri: 'global_chat',
+
+                userId: null,
+                usertToken: null,
+                user: null,
+                friend: {},
+                
+                userList: [],
+                messages: [],
+                private_messages: [],
+            };
+        },
+
+        created() {
+            this.userId = $cookies.get('userId');
+            this.usertToken = $cookies.get('usertToken');
+
+            if (this.usertToken === null) {
+                window.location.href = '/loginForm.html';
             }
-        ]
-    }],
-        messages: [      {"_id": "5eca8837887d882cc0e98e44",
-        "from": "5eca793271506d3854ebc16b",
-        "text": "Hello!",
-        "fromName": "Valerii 1"}],
-        friend: {},
-        user: {
-        "_id": "5eca6d7ac4af8618503b323e",
-        "name": "Andrew",
-        "active": true,
-        "status": "ZZZZZZZZZZZZZZZZ",
-        "city": "Vin",
-        "phone": "+380971234567",
-        "email": "1@1.com",
-        "friends": [
-            {
-                "id": "5eca7240b50de606c084494b",
-                "name": "Inokentii"
-            },
-            {
-                "id": "5eca793271506d3854ebc16b",
-                "name": "Valerii 1"
-            }
-        ]
-    },
-        private_messages: [],
-        }
-    },
+        },
 
         mounted() {
-        axios.get('http://localhost:3000/users/')
-          .then(response => { 
-            console.log(response.data, "_____________")
-            this.users = response.data});
-        axios.get('http://localhost:3000/messages/')
-          .then(response => (this.messages = response.data));
-        axios.get('http://localhost:3000/users/5eca6d7ac4af8618503b323e')
-          .then(response => (this.user = response.data));
-        axios.get('http://localhost:3000/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b')
-          .then(response => (this.private_messages = response.data));
-      }      
+            axios.defaults.withCredentials = true;
 
-};
+            axios.get('http://localhost:3000/users/')
+                .then(response => { this.userList = response.data });
+            axios.get('http://localhost:3000/messages/')
+                .then(response => { this.messages = response.data });
+            axios.get(`http://localhost:3000/users/${this.userId}`)
+                .then(response => { this.user = response.data });
+            // axios.get('http://localhost:3000/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b')
+            //     .then(response => {this.private_messages = response.data});
+        },
+
+        methods: {
+            logout() {
+                $cookies.remove('userToken');
+                window.location.href = '/loginForm.html';
+            },
+            submitUserData() {
+                axios.post(`http://localhost:3000/users/${this.userId}`, this.user);
+            },
+        },
+    };
 </script>
 
 <style>

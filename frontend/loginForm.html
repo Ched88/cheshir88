@@ -6,24 +6,97 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link href="style.css" rel="stylesheet">
-    <script src="script.js"></script>
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-cookies@1.7.0/vue-cookies.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-       
-<div id="action_form">
-    <form action="" method="post">
-        <div class="container">
-            <label><b>Your name</b></label>
-            <div><input id="username" name="login" placeholder="Enter username" tabindex="1" type="text"></div>
-            <label><b>Your password</b></label>
-            <div><input id="password" name="password" placeholder="Enter password" tabindex="2" type="password"></div>
-            <div><label><input type="checkbox" checked="checked" name="remember"> <span class="lgn">Remember me</span></label></div>
-            <div><button onclick="testLogin()" type="submit" tabindex="3" class="lgn">Sign-in</button></div>
-            <div><button onclick="testRegister()" type="submit" tabindex="4" class="lgn">Create your account</button></div>
+    <div id="app">
+        <div id="action_form">
+            <div class="container">
+                <label><b>Your name</b></label>
+                <div><input id="username" v-model="login" placeholder="Enter username" tabindex="1" type="text"></div>
+                <label><b>Your password</b></label>
+                <div><input id="password" v-model="password" placeholder="Enter password" tabindex="2" type="password"></div>
+                <div><label><input type="checkbox" checked="checked" name="remember"> <span class="lgn">Remember me</span></label></div>
+                <div><button v-on:click="onLogin()" tabindex="3" class="lgn">Sign-in</button></div>
+                <div><button v-on:click="onRegister()" tabindex="4" class="lgn">Create your account</button></div>
             </div>
-    </form>
-</div>
+        </div>
+    </div>
+
+    <script>
+        const charMatch = new RegExp('^[a-zA-Z_0-9]*$');
+
+        // Vue.use(VueCookies)
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                login: "",
+                password: "",
+            },
+            methods: {
+                onLogin() {
+                    if (this.validateLogin(this.login, this.password) === true) {
+                        axios.post('http://localhost:3000/login/', {
+                            login: this.login,
+                            password: this.password,
+                        })
+                        .then(response => {
+                            $cookies.set('userId', response.data.id);
+                            $cookies.set('userToken', response.data.token);
+                            window.location.href = '/';
+                        });
+                    }
+                },
+
+                onRegister() {
+                    if (this.validateRegister(this.login, this.password) === true) {
+                        axios.post('http://localhost:3000/register/', {
+                            login: this.login,
+                            password: this.password,
+                        })
+                        .then(response => {
+                            $cookies.set('userId', response.data.id);
+                            $cookies.set('userToken', response.data.token);
+                            window.location.href = '/';
+                        });
+                    }
+                },
+
+                validateLogin(login, password) {
+                    if(login.length <= 0) {
+                        alert('Password and Login fields cannot be empty'); 
+                        return false;
+                    }
+                    if(password.length <= 0) {
+                        alert('Password and Login fields cannot be empty'); 
+                        return false;
+                    }
+                    return true;
+                },
+
+                validateRegister(login, password) {
+                    if(login.length <= 0)
+                        {alert('Password and Login fields cannot be empty'); return false;}
+                    if(!charMatch.test(login))
+                        {alert('Login must contain only latin letters'); return false;}
+                    if(login.length < 4 || login.length > 20)
+                        { alert('Login must be between 4 and 20 characters'); return false;}
+                    if(parseInt(login.substr(0, 1)))
+                        {alert('Login must begin with a letter'); return false;}
+                    if(password.length <= 0)
+                        {alert('Password and Login fields cannot be empty'); return false;}
+                    if(!charMatch.test(password))
+                        {alert('Password must contain only latin letters'); return false;}
+                    if(password.length < 6)
+                        { alert('Password must be more than 6 characters'); return false;}
+                    return true;
+                },
+            },
+        })
+      </script>
 </body>
 </html>
