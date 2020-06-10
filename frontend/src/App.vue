@@ -22,7 +22,6 @@
                             <div class="input-wrapper"><input type="textarea" value="" placeholder="write something..."></div>
                             <input type="button" value="Send" class="send-btn">
                             </div>
-                    
                         </div>
                         <div v-if="dataUri === 'my_profile'">
                            <div class="profile-window">
@@ -47,7 +46,7 @@
                                 <div class="input-email">
                                         <div class="input-wrapper-profile"><input v-model="user.email" type="email" value="" placeholder="write something..."></div>
                                 </div>
-                                <input type="button" value="Submit" class="submit-btn-profile">
+                                <input type="button" value="Submit" class="submit-btn-profile" v-on:click="submitUserData" >
                             </div>
                         </div>
                         </div>
@@ -178,5 +177,5 @@ export default {
 </script>
 
 <style>
- @import './App.css';
+    @import './App.css';
 </style>
