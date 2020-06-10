@@ -124,6 +124,9 @@ color: black;
     bottom: 0px;
     left: 10px;
 }
+.online-list-item{
+    padding: 5px;
+}
 /*------------------profile------------------------*/
 .profile-window{
     position: absolute;

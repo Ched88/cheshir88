@@ -97,7 +97,7 @@
 
                     <div class="online-list">
                         <span class="span-online-users">Users now online</span>
-                        <li v-for="item in users" :key="item._id">
+                        <li class="online-list-item" v-for="item in users" :key="item._id">
                         {{ item.name }}
                         </li>
                     </div>
