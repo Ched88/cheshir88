@@ -63,32 +63,32 @@
                         </div>
 
                         <div v-if="dataUri === 'friend_profile'">
-
                             <div class="profile-window">
-                            <div class="input-area-friend-profile">
-                                <div><span class="span-friend-profile">Status</span></div>
-                                    <div class="input-status">
+                                <div class="input-area-friend-profile">
+                                    <div><span class="span-friend-profile">Status</span></div>
+                                        <div class="input-status">
+                                            <div class="input-wrapper-friend-profile"><input type="textarea" readonly value="" ></div>
+                                        </div>
+                                            <div><span class="span-friend-profile">Name</span></div>
+                                    <div class="input-name">
                                         <div class="input-wrapper-friend-profile"><input type="textarea" readonly value="" ></div>
                                     </div>
-                                        <div><span class="span-friend-profile">Name</span></div>
-                                <div class="input-name">
-                                    <div class="input-wrapper-friend-profile"><input type="textarea" readonly value="" ></div>
+                                            <div><span class="span-friend-profile">City</span></div>
+                                    <div class="input-city">
+                                            <div class="input-wrapper-friend-profile"><input type="textarea" readonly value="" ></div>
+                                    </div>
+                                            <div><span class="span-friend-profile">Phone number</span></div>
+                                    <div class="input-phone-number">
+                                            <div class="input-wrapper-friend-profile"><input type="tel" readonly value="" ></div>
+                                    </div>
+                                            <div><span class="span-friend-profile">Email</span></div>
+                                    <div class="input-email">
+                                            <div class="input-wrapper-friend-profile"><input type="email" readonly value="" ></div>
+                                    </div>
+                                    <input type="button" v-on:click="dataUri = 'global_chat'" value="Open private chat" class="open-privateChat-btn">
+                                    <input type="button" value="+ Add to friends" class="add-to-friends-btn">
                                 </div>
-                                        <div><span class="span-friend-profile">City</span></div>
-                                <div class="input-city">
-                                        <div class="input-wrapper-friend-profile"><input type="textarea" readonly value="" ></div>
-                                </div>
-                                        <div><span class="span-friend-profile">Phone number</span></div>
-                                <div class="input-phone-number">
-                                        <div class="input-wrapper-friend-profile"><input type="tel" readonly value="" ></div>
-                                </div>
-                                        <div><span class="span-friend-profile">Email</span></div>
-                                <div class="input-email">
-                                        <div class="input-wrapper-friend-profile"><input type="email" readonly value="" ></div>
-                                </div>
-                                <input type="button" v-on:click="dataUri = 'global_chat'" value="Open private chat" class="open-privateChat-btn">
                             </div>
-                        </div>
 
                         </div>
 
@@ -97,9 +97,37 @@
                     <div class="online-list">
                         <span class="span-online-users">Users now online</span>
                         <li class="online-list-item" v-for="item in users" :key="item._id">
-                        {{ item.name }}
+                        <a v-on:click="dataUri = 'someone_profile'" class="online-list-a">{{ item.name }}</a>
                         </li>
                     </div>
+                     <div v-if="dataUri === 'someone_profile'">
+                         <div class="someone-profile-window">
+                                <div class="input-area-someone-profile">
+                                    <div><span class="span-someone-profile">Status</span></div>
+                                        <div class="input-status">
+                                            <div class="input-wrapper-someone-profile"><input type="textarea" readonly value="" ></div>
+                                        </div>
+                                            <div><span class="span-someone-profile">Name</span></div>
+                                    <div class="input-name">
+                                        <div class="input-wrapper-someone-profile"><input type="textarea" readonly value="" ></div>
+                                    </div>
+                                            <div><span class="span-someone-profile">City</span></div>
+                                    <div class="input-city">
+                                            <div class="input-wrapper-someone-profile"><input type="textarea" readonly value="" ></div>
+                                    </div>
+                                            <div><span class="span-someone-profile">Phone number</span></div>
+                                    <div class="input-phone-number">
+                                            <div class="input-wrapper-someone-profile"><input type="tel" readonly value="" ></div>
+                                    </div>
+                                            <div><span class="span-someone-profile">Email</span></div>
+                                    <div class="input-email">
+                                            <div class="input-wrapper-someone-profile"><input type="email" readonly value="" ></div>
+                                    </div>
+                                    <input type="button" v-on:click="dataUri = 'global_chat'" value="Open private chat" class="open-privateChat-btn">
+                                    <input type="button" value="+ Add to friends" class="add-to-friends-btn">
+                                </div>
+                            </div>
+                     </div>
                     
                 </div>
             </form>

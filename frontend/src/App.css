@@ -117,6 +117,7 @@ color: black;
 }
 .users-list{
     padding: 10px;
+    text-align: center;
 }
 .friend-window{
     position: absolute;
@@ -125,7 +126,19 @@ color: black;
     left: 10px;
 }
 .online-list-item{
-    padding: 5px;
+    padding-top: 10px;
+    text-align: center;
+}
+.online-list-a {
+    cursor: pointer;
+    color: black;
+}
+.online-list-a:hover {
+    cursor: pointer;
+    color: #59c07e;
+}
+.online-list-a:visited{
+    color: green;
 }
 /*------------------profile------------------------*/
 .profile-window{
@@ -216,14 +229,30 @@ color: black;
     top: 10px;
     background-color: #4CAF50;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 60px;
     border: none;
     cursor: pointer;
 }
 .open-privateChat-btn:hover{
     background-color: rgb(32, 121, 35);
     color: white;
-    padding: 10px 20px;
+    padding: 10px 60px;
+    border: none;
+    cursor: pointer;
+}
+.add-to-friends-btn {
+    position: relative;
+    top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    cursor: pointer;
+}
+.add-to-friends-btn:hover{
+    background-color: rgb(32, 121, 35);
+    color: white;
+    padding: 10px 10px;
     border: none;
     cursor: pointer;
 }
@@ -233,3 +262,74 @@ color: black;
 
 /*------------------friend_profile_end------------------------*/
 
+/*------------------someone_profile------------------------*/
+.someone-profile-window{
+    position: absolute;
+    float: left;
+    top: 10px;
+    bottom: 0;
+    left: 210px;
+    right:0;
+    }
+.input-area-someone-profile{
+    padding: 6px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 360px;
+    border-top: 1px solid #cfdae1;
+    }
+.input-area-someone-profile .input-wrapper-someone-profile{
+    background: #fff;
+    border: 1px solid #cfdae1;
+    overflow: hidden;
+    float: left;
+    }
+.input-area-someone-profile .input-wrapper-someone-profile input{
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    margin: 0;
+    padding: 0 10px;
+    outline: none;
+    color: #5D7185;
+    min-width: 865px;
+    }
+.open-privateChat-btn{
+    position: relative;
+    top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 60px;
+    border: none;
+    cursor: pointer;
+}
+.open-privateChat-btn:hover{
+    background-color: rgb(32, 121, 35);
+    color: white;
+    padding: 10px 60px;
+    border: none;
+    cursor: pointer;
+}
+.add-to-friends-btn {
+    position: relative;
+    top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    cursor: pointer;
+}
+.add-to-friends-btn:hover{
+    background-color: rgb(32, 121, 35);
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    cursor: pointer;
+}
+.span-someone-profile{
+    font-family: 'Roboto', sans-serif;
+}
+
+/*------------------someone_profile_end------------------------*/
