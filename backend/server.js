@@ -3,7 +3,8 @@ const mongo = require('mongodb');
 const app = express();
 
 var port = 3000;
-var dbUrl = 'mongodb://localhost:27017';
+// var dbUrl = 'mongodb://localhost:27017';
+var dbUrl = 'mongodb://zz28:123456z@ds233238.mlab.com:33238/fine-chat'
 var dbName = 'fine-chat';
 
 app.use(express.json());
