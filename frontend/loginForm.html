@@ -48,6 +48,9 @@
                             $cookies.set('userId', response.data.id);
                             $cookies.set('userToken', response.data.token);
                             window.location.href = '/';
+                        })
+                        .catch(error => {
+                            alert('Invalid login or password');
                         });
                     }
                 },
@@ -62,6 +65,9 @@
                             $cookies.set('userId', response.data.id);
                             $cookies.set('userToken', response.data.token);
                             window.location.href = '/';
+                        })
+                        .catch(error => {
+                            alert('Can`t create this user');
                         });
                     }
                 },

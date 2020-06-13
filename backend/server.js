@@ -68,6 +68,7 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
       login: req.body.login,
       password: req.body.password,
     });
+console.log("login", user);
 
     if (user === null) {
       res.status(500).json({});
@@ -88,7 +89,7 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
   
   // Get all users: http://localhost:3000/users/
   app.get('/users', async (req, res) => {
-    var result = await db.collection('users').find().toArray();
+    var result = await db.collection('users').find({active: true}).toArray();
     var users = result.map(u => { 
       return {
         id: u._id,
