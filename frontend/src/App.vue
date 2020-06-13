@@ -19,20 +19,20 @@
                              {{user.name}} friends:
                               <ul>
                                 <li clas v-for="item in user.friends" :key="item.id">
-                                    <a v-on:click="dataUri = 'private_chat_messages'" class="friedns-list" href="#"><span>{{ item.name }}</span></a>
+                                    <a v-on:click="openPrivateChat(item)" class="friedns-list" href="#"><span>{{ item.name }}</span></a>
                                 </li>
                               </ul>
                             </div> 
                         </div>
                         <div v-if="dataUri === 'private_chat_messages'">    
                             <div class="chat-list">
-                                  <li v-for="item in messages" :key="item._id">
-                                <b>{{ item.fromName }}:</b> {{ item.text }}
+                                <li v-for="item in private_messages[someone.id]" :key="item.id">
+                                    <b>{{ item.fromName }}:</b> {{ item.text }}
                                 </li>
                             </div>
                             <div class="input-area">
-                            <div class="input-wrapper"><input type="textarea" value="" placeholder="write something..."></div>
-                            <input type="button" value="Send" class="send-btn">
+                            <div class="input-wrapper"><input v-model="privateChatText" type="textarea" value="" placeholder="write something..."></div>
+                            <input v-on:click="sendPrivateMessage(privateChatText)" type="button" value="Send" class="send-btn">
                             </div>
                         </div>
                         <div v-if="dataUri === 'global_chat'">    
@@ -220,6 +220,10 @@
             friendSign(testUser){
                 return this.user.friends.some(e => e.id === testUser.id);
             },
+            openPrivateChat(testUser) {
+                this.someone = testUser;
+                this.dataUri = 'private_chat_messages';
+            },
             sendMessage(text) {
                 this.connection.send(JSON.stringify({
                     from: this.userId,
@@ -236,11 +240,13 @@
                 }));
             },
             onMessageReceived(data) {
-                console.log('ZZZ:');
-
                 if (data.type === 'public') {
                     console.log('New public message from:', data.from, ', data:', data);
                     this.messages.push(data);
+                    // TODO: DO we need this?
+                    if (this.messages.length > 10) {
+                        this.messages = this.messages.slice(-10);
+                    }
                 } else if (data.type === 'private') {
                     let friend = data.from === this.userId ? data.to : data.from;
                     if (!this.private_messages[friend]) {
@@ -248,6 +254,10 @@
                     }
                     console.log('New private message from:', friend, ', data:', data);
                     this.private_messages[friend].push(data);
+
+                    let zz = this.private_messages;
+                    this.private_messages = {};
+                    this.private_messages = zz;
                 }
             },
         },

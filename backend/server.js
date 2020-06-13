@@ -202,7 +202,8 @@ console.log("login", user);
   // Get all global messages
   app.get('/messages', async (req, res) => {
     var users = await db.collection('users').find().toArray();
-    var result = await db.collection('messages').find().toArray();
+    var result = await db.collection('messages').find().sort({$natural:-1}).limit(5).toArray();
+    result.reverse();
 
     result.forEach((m) =>  {
       var fromUser = users.find(u => u._id == m.from);
