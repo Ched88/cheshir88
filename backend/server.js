@@ -1,15 +1,18 @@
+// TODO: Add password hashing
+
 const express = require('express');
 const mongo = require('mongodb');
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
+const expressWs = require('express-ws')(app);
 
 
-var port = 3000;
-var dbUrl = 'mongodb://zz28:123456z@ds233238.mlab.com:33238/fine-chat'
-var dbName = 'fine-chat';
-var frontendUrl = 'http://localhost:8080';
-
+const port = 3000;
+const dbUrl = 'mongodb://zz28:123456z@ds233238.mlab.com:33238/fine-chat'
+const dbName = 'fine-chat';
+const frontendUrl = 'http://localhost:8080';
+let sessions = [];
 
 app.use(express.json());
 app.use(cookieParser());
@@ -27,6 +30,55 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
     res.header('Access-Control-Allow-Methods', 'HEAD, OPTIONS, GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     next();
+  });
+
+  app.ws('/chat/:id', (ws, req) => {
+    ws.uuid = uuidv4();
+    ws.userId = req.params.id;
+    sessions.push(ws);
+    console.log('Connected:', ws.uuid, ', userId:', ws.userId);
+
+    ws.on('message', async (msg) => {
+      let data = JSON.parse(msg);
+      console.log(data);
+
+      var result = await db.collection('users').find().toArray();
+      var userNames = {};
+      result.forEach(u => userNames[u._id] = u.name);
+      
+      if (data.type === 'public') {
+        // Save to DB
+        var message = {
+          type: data.type,
+          from: data.from,
+          fromName: userNames[data.from],
+          text: data.text,
+        };
+        await db.collection('messages').insertOne(message);
+        // Send to everyone, including the sender
+        sessions.forEach(w => w.send(JSON.stringify(message)));
+
+      } else if (data.type === 'private') {
+        // Save to DB
+        var message = {
+          type: data.type,
+          from: data.from,
+          fromName: userNames[data.from],
+          to: data.to,
+          toName: userNames[data.to],
+          text: data.text,
+        };
+        await db.collection('private-messages').insertOne(message);
+        // Send to recipient and sender only
+        sessions.filter(w => w.userId === data.from || w.userId === data.to)
+          .forEach(w => w.send(JSON.stringify(message)));
+      }
+    });
+
+    ws.on('close', () => {
+      sessions = sessions.filter(e => e !== ws);
+      console.log('Disconnected', ws.uuid);
+    });
   });
 
   // Register http://localhost:3000/register/
@@ -88,7 +140,7 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
   
   // Get all users: http://localhost:3000/users/
   app.get('/users', async (req, res) => {
-    var result = await db.collection('users').find().toArray();
+    var result = await db.collection('users').find({ active: true }).toArray();
     var users = result.map(u => { 
       return {
         id: u._id,

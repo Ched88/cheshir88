@@ -20,8 +20,8 @@
                                 </li>
                             </div>
                             <div class="input-area">
-                            <div class="input-wrapper"><input type="textarea" value="" placeholder="write something..."></div>
-                            <input type="button" value="Send" class="send-btn">
+                            <div class="input-wrapper"><input v-model="globalChatText" type="textarea" value="" placeholder="write something..."></div>
+                            <input v-on:click="sendMessage(globalChatText)" type="button" value="Send" class="send-btn">
                             </div>
                         </div>
                         <div v-if="dataUri === 'my_profile'">
@@ -97,7 +97,7 @@
 
                     <div class="online-list">
                         <span class="span-online-users">Users now online</span>
-                        <li class="online-list-item" v-for="item in users" :key="item._id">
+                        <li class="online-list-item" v-for="item in userList" :key="item._id">
                         <a v-on:click="dataUri = 'someone_profile'" class="online-list-a">{{ item.name }}</a>
                         </li>
                     </div>
@@ -137,42 +137,53 @@
 </template>
 
 <script>
-    let axios = require('axios');
+    const axios = require('axios');
+    const backendUrl = 'http://192.168.31.6:3000';
+    const backendWS = 'ws://192.168.31.6:3000';
+
     export default {
         data: function () {
             return {
+                connection: null,
                 dataUri: 'global_chat',
 
                 userId: null,
                 usertToken: null,
                 user: null,
                 friend: {},
+                globalChatText: '',
+                privateChatText: '',
                 
                 userList: [],
                 messages: [],
-                private_messages: [],
+                private_messages: {},
             };
         },
 
         created() {
             this.userId = $cookies.get('userId');
-            this.usertToken = $cookies.get('usertToken');
+            this.usertToken = $cookies.get('userToken');
 
             if (this.usertToken === null) {
                 window.location.href = '/loginForm.html';
+            } else {
+                this.connection = new WebSocket(`${backendWS}/chat/${this.userId}`);
+                this.connection.onmessage = (event) => {
+                    this.onMessageReceived(JSON.parse(event.data));
+                };
             }
         },
 
         mounted() {
             axios.defaults.withCredentials = true;
 
-            axios.get('http://localhost:3000/users/')
+            axios.get(`${backendUrl}/users/`)
                 .then(response => { this.userList = response.data });
-            axios.get('http://localhost:3000/messages/')
+            axios.get(`${backendUrl}/messages/`)
                 .then(response => { this.messages = response.data });
-            axios.get(`http://localhost:3000/users/${this.userId}`)
+            axios.get(`${backendUrl}/users/${this.userId}`)
                 .then(response => { this.user = response.data });
-            // axios.get('http://localhost:3000/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b')
+            // axios.get(`${backendUrl}/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b`)
             //     .then(response => {this.private_messages = response.data});
         },
 
@@ -182,7 +193,37 @@
                 window.location.href = '/loginForm.html';
             },
             submitUserData() {
-                axios.post(`http://localhost:3000/users/${this.userId}`, this.user);
+                axios.post(`${backendUrl}/users/${this.userId}`, this.user);
+            },
+            sendMessage(text) {
+                this.connection.send(JSON.stringify({
+                    from: this.userId,
+                    type: 'public',
+                    text: text,
+                }));
+            },
+            sendPrivateMessage(text) {
+                this.connection.send(JSON.stringify({
+                    from: this.userId,
+                    to: this.someone.id,
+                    type: 'private',
+                    text: text,
+                }));
+            },
+            onMessageReceived(data) {
+                console.log('ZZZ:');
+
+                if (data.type === 'public') {
+                    console.log('New public message from:', data.from, ', data:', data);
+                    this.messages.push(data);
+                } else if (data.type === 'private') {
+                    let friend = data.from === this.userId ? data.to : data.from;
+                    if (!this.private_messages[friend]) {
+                        this.private_messages[friend] = [];
+                    }
+                    console.log('New private message from:', friend, ', data:', data);
+                    this.private_messages[friend].push(data);
+                }
             },
         },
     };
