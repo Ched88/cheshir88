@@ -6,6 +6,7 @@
 
                     <div class="nav-panel">
                             <ul class="">
+                                <!-- TODO: add counter to unread msgs -->
                               <li class="item" v-on:click="dataUri = 'global_chat'"><a href="#"><span>Global chat</span></a></li>
                               <li class="item" v-on:click="dataUri = 'my_profile'"><a href="#"><span>My profile</span></a></li>
                               <li class="item" v-on:click="dataUri = 'my_friends'"><a href="#"><span>My friends</span></a></li>
@@ -16,7 +17,7 @@
                     <div class="chat">
                         <div v-if="dataUri === 'private_chat'">
                              <div class="friend-window">
-                             {{user.name}} friends:
+                             Choose a person to talk:
                               <ul>
                                 <li clas v-for="item in user.friends" :key="item.id">
                                     <a v-on:click="openPrivateChat(item)" class="friedns-list" href="#"><span>{{ item.name }}</span></a>
@@ -25,6 +26,7 @@
                             </div> 
                         </div>
                         <div v-if="dataUri === 'private_chat_messages'">    
+                            <!-- TODO: ADD PRIVATE CHAT -->
                             <div class="chat-list">
                                 <li v-for="item in private_messages[someone.id]" :key="item.id">
                                     <b>{{ item.fromName }}:</b> {{ item.text }}
@@ -87,10 +89,11 @@
                     </div>
 
                     <div class="online-list">
-                        <span class="span-online-users">Users now online</span>
+                        <span class="span-online-users">Users:</span>
                         <li class="online-list-item" v-on:click="onSomeoneClick(item)" v-for="item in userList" :key="item._id">
                         <a class="online-list-a"><span >{{ item.name }}</span></a>
-                        <span v-if="friendSign(item)" class="friend-sign"> friend</span>
+                        <span v-if="friendSign(item)" class="friend-sign"> online</span>
+                        <!--TODO: add sign to online users -->
                         </li>
                     </div>
                      <div v-if="dataUri === 'someone_profile'">
@@ -116,7 +119,6 @@
                                     <div class="input-email">
                                             <div class="input-wrapper-someone-profile"><input v-model="someone.email" type="email" readonly value="" ></div>
                                     </div>
-                                    <input type="button" v-on:click="dataUri = 'global_chat'" value="Open private chat" class="open-privateChat-btn">
                                     <input type="button" v-if="!someone.isFriend" v-on:click="addFriend()" value="+ Add to friends" class="add-to-friends-btn">
                                     <input type="button" v-if="someone.isFriend" v-on:click="removeFriend()" value="Remove friend" class="add-to-friends-btn">
                                 </div>
@@ -131,8 +133,8 @@
 
 <script>
     const axios = require('axios');
-    const backendUrl = 'http://192.168.31.6:3000';
-    const backendWS = 'ws://192.168.31.6:3000';
+    const backendUrl = 'http://localhost:3000';
+    const backendWS = 'ws://localhost:3000';
 
     export default {
         data: function () {
@@ -142,7 +144,9 @@
 
                 userId: null,
                 usertToken: null,
-                user: null,
+                user: {
+                    friends: [],
+                },
                 someone: {},
                 friend: {},
                 globalChatText: '',
