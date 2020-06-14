@@ -1,7 +1,3 @@
-// TODO: Add password hashing
-// TODO: Online
-// TODO: Fix defect(s)
-
 const express = require('express');
 const mongo = require('mongodb');
 const cookieParser = require('cookie-parser');
@@ -41,6 +37,11 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
     sessions.push(ws);
     console.log('Connected:', ws.uuid, ', userId:', ws.userId);
 
+    // Notify all about new user is now online
+    sessions.forEach(w => w.send(JSON.stringify({
+      type: 'online',
+    })));
+
     ws.on('message', async (msg) => {
       let data = JSON.parse(msg);
       console.log(data);
@@ -48,7 +49,7 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
       var result = await db.collection('users').find().toArray();
       var userNames = {};
       result.forEach(u => userNames[u._id] = u.name);
-      
+
       if (data.type === 'public') {
         // Save to DB
         var message = {
@@ -81,6 +82,10 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
     ws.on('close', () => {
       sessions = sessions.filter(e => e !== ws);
       console.log('Disconnected', ws.uuid);
+      // Notify all about new user is now offline
+      sessions.forEach(w => w.send(JSON.stringify({
+        type: 'online',
+      })));
     });
   });
 
@@ -147,7 +152,8 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
     var users = result.map(u => { 
       return {
         id: u._id,
-        name: u.name
+        name: u.name,
+        online: sessions.some(s => s.userId == u._id),
       };
     });
     res.json(users);

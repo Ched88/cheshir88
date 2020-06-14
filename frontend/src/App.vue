@@ -92,7 +92,8 @@
                         <span class="span-online-users">Users:</span>
                         <li class="online-list-item" v-on:click="onSomeoneClick(item)" v-for="item in userList" :key="item._id">
                         <a class="online-list-a"><span >{{ item.name }}</span></a>
-                        <span v-if="friendSign(item)" class="friend-sign"> online</span>
+                        <span v-if="friendSign(item)" class="friend-sign"> friend</span>
+                        <span v-if="item.online" class="friend-sign"> online</span>
                         <!--TODO: add sign to online users -->
                         </li>
                     </div>
@@ -262,6 +263,9 @@
                     let zz = this.private_messages;
                     this.private_messages = {};
                     this.private_messages = zz;
+                } else if (data.type === 'online') {
+                    axios.get(`${backendUrl}/users/`)
+                        .then(response => { this.userList = response.data });
                 }
             },
         },
