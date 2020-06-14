@@ -1,17 +1,20 @@
 // TODO: Add password hashing
+// TODO: Online
+// TODO: Fix defect(s)
 
 const express = require('express');
 const mongo = require('mongodb');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
 const expressWs = require('express-ws')(app);
-
 
 const port = 3000;
 const dbUrl = 'mongodb://zz28:123456z@ds233238.mlab.com:33238/fine-chat'
 const dbName = 'fine-chat';
 const frontendUrl = 'http://localhost:8080';
+const saltRounds = 10;
 let sessions = [];
 
 app.use(express.json());
@@ -94,7 +97,7 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
 
       var newUser = {
         login: req.body.login,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, saltRounds),
         token: newToken,
         name: req.body.login,
         active: true,
@@ -118,11 +121,10 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
   app.post('/login', async (req, res) => {
     var user = await db.collection('users').findOne({
       login: req.body.login,
-      password: req.body.password,
     });
-console.log("login", user);
+    var isSuccess = (user !== null) && bcrypt.compareSync(req.body.password, user.password);
 
-    if (user === null) {
+    if (!isSuccess) {
       res.status(500).json({});
     } else {
       newToken = uuidv4();
