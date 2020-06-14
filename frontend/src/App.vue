@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <div id="chatForm">
-            <form action="" method="post">
                 <div class="chat-window">
 
                     <div class="nav-panel">
@@ -33,7 +32,7 @@
                                 </li>
                             </div>
                             <div class="input-area">
-                            <div class="input-wrapper"><input v-model="privateChatText" type="textarea" value="" placeholder="write something..."></div>
+                            <div class="input-wrapper"><input v-model="privateChatText" v-on:keyup.enter="sendPrivateMessage(privateChatText)" type="textarea" value="" placeholder="write something..."></div>
                             <input v-on:click="sendPrivateMessage(privateChatText)" type="button" value="Send" class="send-btn">
                             </div>
                         </div>
@@ -44,7 +43,7 @@
                                 </li>
                             </div>
                             <div class="input-area">
-                            <div class="input-wrapper"><input v-model="globalChatText" type="textarea" value="" placeholder="write something..."></div>
+                            <div class="input-wrapper"><input v-model="globalChatText" v-on:keyup.enter="sendMessage(globalChatText)" type="textarea" value="" placeholder="write something..."></div>
                             <input v-on:click="sendMessage(globalChatText)" type="button" value="Send" class="send-btn">
                             </div>
                         </div>
@@ -126,7 +125,6 @@
                      </div>
                     
                 </div>
-            </form>
         </div>
     </div> 
 </template>
@@ -264,6 +262,7 @@
                     this.private_messages = zz;
                 }
             },
+            
         },
     };
 </script>
