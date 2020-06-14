@@ -19,7 +19,10 @@
                              Choose a person to talk:
                               <ul>
                                 <li clas v-for="item in user.friends" :key="item.id">
-                                    <a v-on:click="openPrivateChat(item)" class="friedns-list" href="#"><span>{{ item.name }}</span></a>
+                                    <a v-on:click="openPrivateChat(item)" class="friedns-list" href="#">
+                                        <span>{{ item.name }}</span>
+                                        <span class="badge">{{ item.unreadCount }}</span>
+                                    </a>
                                 </li>
                               </ul>
                             </div> 
@@ -179,7 +182,12 @@
             axios.get(`${backendUrl}/messages/`)
                 .then(response => { this.messages = response.data });
             axios.get(`${backendUrl}/users/${this.userId}`)
-                .then(response => { this.user = response.data });
+                .then(response => { 
+                    response.data.friends.forEach(e => {
+                        e.unreadCount = 0;
+                    });
+                    this.user = response.data;
+                });
             // axios.get(`${backendUrl}/messages/5eca6d7ac4af8618503b323e/5eca7240b50de606c084494b`)
             //     .then(response => {this.private_messages = response.data});
         },
@@ -204,7 +212,8 @@
             addFriend(){
                 this.user.friends.push({
                     id: this.someone.id,
-                    name: this.someone.name
+                    name: this.someone.name,
+                    unreadCount: 0,
                 });
                 this.submitUserData();
                 this.someone.isFriend = true;
@@ -261,6 +270,11 @@
                     let zz = this.private_messages;
                     this.private_messages = {};
                     this.private_messages = zz;
+
+                    this.user.friends.find(e => e.id == friend).unreadCount++;
+                    if (this.dataUri === 'private_chat_messages' && this.someone.id === friend) {
+                        this.user.friends.find(e => e.id == friend).unreadCount = 0;
+                    }
                 } else if (data.type === 'online') {
                     axios.get(`${backendUrl}/users/`)
                         .then(response => { this.userList = response.data.filter(e => e.id !== this.userId);});

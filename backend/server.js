@@ -87,6 +87,10 @@ mongo.MongoClient.connect(dbUrl, (err, client) => {
         type: 'online',
       })));
     });
+
+    ws.on('onerror', (event) => {
+      console.log("WS error:", event);
+    });
   });
 
   // Register http://localhost:3000/register/
