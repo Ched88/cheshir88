@@ -113,7 +113,7 @@ color: black;
     font-family: 'Roboto', sans-serif;
     position: relative;
     top: 10px;
-    left: 30px;
+    left: 80px;
 }
 .friend-sign{
     color: #59c07e;
@@ -132,7 +132,9 @@ color: black;
 }
 .online-list-item{
     padding-top: 10px;
-    text-align: center;
+    position: relative;
+    left: 20px;
+    top: 10px;
 }
 .online-list-a {
     cursor: pointer;
