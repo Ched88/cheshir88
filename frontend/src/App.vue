@@ -91,8 +91,8 @@
                         <span class="span-online-users">Users:</span>
                         <li class="online-list-item" v-on:click="onSomeoneClick(item)" v-for="item in userList" :key="item._id">
                         <a class="online-list-a"><span >{{ item.name }}</span></a>
-                        <span v-if="friendSign(item)" class="friend-sign"> friend</span>
-                        <span v-if="item.online" class="friend-sign"> online</span>
+                        <span v-if="friendSign(item)" class="friend-sign"> <img :src="require('./friend_icon.png')" /></span>
+                        <span v-if="item.online" class="online-sign"> online</span>
                         <!--TODO: add sign to online users -->
                         </li>
                     </div>
@@ -175,7 +175,7 @@
             axios.defaults.withCredentials = true;
 
             axios.get(`${backendUrl}/users/`)
-                .then(response => { this.userList = response.data });
+                .then(response => { this.userList = response.data.filter(e => e.id !== this.userId);});
             axios.get(`${backendUrl}/messages/`)
                 .then(response => { this.messages = response.data });
             axios.get(`${backendUrl}/users/${this.userId}`)
@@ -263,7 +263,7 @@
                     this.private_messages = zz;
                 } else if (data.type === 'online') {
                     axios.get(`${backendUrl}/users/`)
-                        .then(response => { this.userList = response.data });
+                        .then(response => { this.userList = response.data.filter(e => e.id !== this.userId);});
                 }
             },
             

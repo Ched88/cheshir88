@@ -115,10 +115,13 @@ color: black;
     top: 10px;
     left: 80px;
 }
-.friend-sign{
+.online-sign{
     color: #59c07e;
     user-select: none;
     
+}
+.friend-sign{
+    color: rgb(241, 241, 0);
 }
 .users-list{
     padding: 10px;
